@@ -137,7 +137,7 @@ typedef struct UIScene {
 
   // dev ui
   float angleSteersDes;
-  int pa0;
+  float pa0;
   float freeSpace;
 
 } UIScene;
@@ -263,6 +263,7 @@ typedef struct UIState {
   model_path_vertices_data model_path_vertices[MODEL_LANE_PATH_CNT * 2];
 
   track_vertices_data track_vertices[2];
+  SubSocket *thermal_sock;
 } UIState;
 
 // API
