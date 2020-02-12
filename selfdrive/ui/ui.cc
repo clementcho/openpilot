@@ -112,6 +112,7 @@ static void ui_init(UIState *s) {
   s->livecalibration_sock = SubSocket::create(s->ctx, "liveCalibration");
   s->radarstate_sock = SubSocket::create(s->ctx, "radarState");
   s->carstate_sock = SubSocket::create(s->ctx, "carState");
+  s->thermal_sock = SubSocket::create(s->ctx, "thermal");
 
   assert(s->model_sock != NULL);
   assert(s->controlsstate_sock != NULL);
@@ -119,7 +120,8 @@ static void ui_init(UIState *s) {
   assert(s->livecalibration_sock != NULL);
   assert(s->radarstate_sock != NULL);
   assert(s->carstate_sock != NULL);
-
+  assert(s->thermal_sock != NULL);
+  
   s->poller = Poller::create({
                               s->model_sock,
                               s->controlsstate_sock,
@@ -128,18 +130,6 @@ static void ui_init(UIState *s) {
                               s->radarstate_sock,
 	                            s->carstate_sock
                              });
-
-  /*
-  s->poller = Poller::create({
-                              s->model_sock,
-                              s->controlsstate_sock,
-                              s->uilayout_sock,
-                              s->livecalibration_sock,
-                              s->radarstate_sock,
-                              s->thermal_sock,
-	                            s->carstate_sock
-                             });
-  */
 
 
 #ifdef SHOW_SPEEDLIMIT
@@ -445,7 +435,11 @@ void handle_message(UIState *s, Message * msg) {
     struct cereal_CarState datad;
     cereal_read_CarState(&datad, eventd.carState);
     s->scene.brakeLights = datad.brakeLights;
-
+  
+  // getting thermal related data for dev ui
+  } else if (eventd.which == cereal_Event_thermal) {
+    struct cereal_ThermalData datad;
+    cereal_read_ThermalData(&datad, eventd.thermal);
     s->scene.pa0 = datad.pa0;
     s->scene.freeSpace = datad.freeSpace;
   }
