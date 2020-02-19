@@ -152,6 +152,7 @@ class CarState():
     self.main_on = cp.vl["CruiseControl"]['Cruise_On']
     self.steer_override = abs(self.steer_torque_driver) > STEER_THRESHOLD[self.car_fingerprint]
     self.angle_steers = cp.vl["Steering_Torque"]['Steering_Angle']
+    #self.angle_steers = cp.vl["Steering_Torque"]['Steering_Angle']*self.alc_dumpener #CHO: updated for softer lane change
     self.door_open = any([cp.vl["BodyInfo"]['DOOR_OPEN_RR'],
       cp.vl["BodyInfo"]['DOOR_OPEN_RL'],
       cp.vl["BodyInfo"]['DOOR_OPEN_FR'],

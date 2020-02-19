@@ -825,7 +825,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w ) 
   int bb_uom_dx =  (int)(bb_w /2 - uom_fontSize*2.5) ;
 
   //add CPU temperature
-  if (true) {
+  /*if (true) {
     char val_str[16];
     char uom_str[6];
     NVGcolor val_color = nvgRGBA(255, 255, 255, 200);
@@ -843,7 +843,7 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w ) 
         val_color, lab_color, uom_color,
         value_fontSize, label_fontSize, uom_fontSize );
       bb_ry = bb_y + bb_h;
-  }
+  }*/
 
    //add battery temperature
   /*
@@ -916,13 +916,12 @@ static void bb_ui_draw_measures_left(UIState *s, int bb_x, int bb_y, int bb_w ) 
   
 
   //finally draw the frame
-  bb_h += 20;
+  /*bb_h += 20;
   nvgBeginPath(s->vg);
   nvgRoundedRect(s->vg, bb_x, bb_y, bb_w, bb_h, 20);
   nvgStrokeColor(s->vg, nvgRGBA(255,255,255,80));
   nvgStrokeWidth(s->vg, 6);
-  nvgStroke(s->vg);
-  
+  nvgStroke(s->vg);*/
 }
 
 

@@ -78,6 +78,11 @@ class PathPlanner():
     self.alc_nudge_less = bool(int(kegman.conf['ALCnudgeLess']))
     self.alc_min_speed = float(kegman.conf['ALCminSpeed'])
     self.alc_timer = float(kegman.conf['ALCtimer'])
+    #CHO: Added ALCdumpenfactor and prevent user enter factor at 0 (which will disable lane change)
+    if kegman.conf['ALCdumpenfactor'] == "-1" or kegman.conf['ALCdumpenfactor'] == "0": 
+      self.alc_dumpener = 1.0
+    else:
+      self.alc_dumpener = float(kegman.conf['ALCdumpenfactor'])
 
     self.lane_change_state = LaneChangeState.off
     self.lane_change_timer = 0.0
@@ -209,13 +214,15 @@ class PathPlanner():
 
     desire = DESIRES[lane_change_direction][self.lane_change_state]
 
-    # Turn off lanes during lane change
+    # Turn off lanes during lane change Added: CHO added alc_dumpener
     if desire == log.PathPlan.Desire.laneChangeRight or desire == log.PathPlan.Desire.laneChangeLeft:
       self.LP.l_prob = 0.
       self.LP.r_prob = 0.
-      self.libmpc.init_weights(MPC_COST_LAT.PATH / 10.0, MPC_COST_LAT.LANE, MPC_COST_LAT.HEADING, self.steer_rate_cost)
+      self.libmpc.init_weights(MPC_COST_LAT.PATH / 10.0, MPC_COST_LAT.LANE, MPC_COST_LAT.HEADING, self.steer_rate_cost*self.alc_dumpener)
+      #self.libmpc.init_weights(MPC_COST_LAT.PATH / 10.0, MPC_COST_LAT.LANE, MPC_COST_LAT.HEADING, self.steer_rate_cost)
     else:
-      self.libmpc.init_weights(MPC_COST_LAT.PATH, MPC_COST_LAT.LANE, MPC_COST_LAT.HEADING, self.steer_rate_cost)
+      self.libmpc.init_weights(MPC_COST_LAT.PATH, MPC_COST_LAT.LANE, MPC_COST_LAT.HEADING, self.steer_rate_cost*self.alc_dumpener)
+      #self.libmpc.init_weights(MPC_COST_LAT.PATH, MPC_COST_LAT.LANE, MPC_COST_LAT.HEADING, self.steer_rate_cost)
 
     self.LP.update_d_poly(v_ego)
 
