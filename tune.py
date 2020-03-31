@@ -258,10 +258,10 @@ while True:
   
   #if float(kegman.conf['slowOnCurves']) <= 0.99999:
   #  kegman.conf['slowOnCurves'] = "0"  
-  if float(kegman.conf['slowOnCurves']) > 1:
+  if float(kegman.conf['slowOnCurves']) > 1.0
     kegman.conf['slowOnCurves'] = "1.0"
 
-  if float(kegman.conf['slowOnCurves']) < 0:
+  if float(kegman.conf['slowOnCurves']) < 0.0:
     kegman.conf['slowOnCurves'] = "0.0"
     
 
