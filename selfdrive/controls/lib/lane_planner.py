@@ -81,6 +81,9 @@ class LanePlanner():
 
   def update_d_poly(self, v_ego):
     # only offset left and right lane lines; offsetting p_poly does not make sense
+    #kegman = kegman_conf()
+    #self.l_poly[3] += float(kegman.conf['cameraOffset'])
+    #self.r_poly[3] += float(kegman.conf['cameraOffset'])
     self.l_poly[3] += CAMERA_OFFSET
     self.r_poly[3] += CAMERA_OFFSET
 

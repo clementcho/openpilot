@@ -41,7 +41,7 @@ button_delay = 0.2
 kegman = kegman_conf()
 kegman.conf['tuneGernby'] = "1"
 #kegman.write_config(kegman.conf)
-param = ["cameraOffset","Kp", "Ki", "Kf", "steerRatio", "sR_boost", "sR_BP0", \
+param = ["steerTorqueMP", "ALCdumpenMP", "Kp", "Ki", "Kf", "steerRatio", "sR_boost", "sR_BP0", \
          "sR_BP1", "sR_time", "steerRateCost", "deadzone", "slowOnCurves", \
          "1barBP0", "1barBP1", "1barMax", "2barBP0", "2barBP1", \
          "2barMax", "3barBP0", "3barBP1", "3barMax", \
@@ -127,11 +127,14 @@ while True:
     break
 
   #Safety check prevent value go out of bound.
+  if float(kegman.conf['ALCdumpenMP']) <=0.0:
+    kegman.conf['ALCdumpenMP'] = "0.1"
+
+  #if float(kegman.conf['cameraOffset']) < 0.01 or float(kegman.conf['cameraOffset']) > 0.09:
+  #  kegman.conf['cameraOffset'] = "0.063"
+
   if float(kegman.conf['tuneGernby']) != 1 and float(kegman.conf['tuneGernby']) != 0:
     kegman.conf['tuneGernby'] = "1"
-
-  if float(kegman.conf['cameraOffset']) < 0.01 or float(kegman.conf['cameraOffset']) > 0.09:
-    kegman.conf['cameraOffset'] = "0.06"
 
   if float(kegman.conf['Ki']) < 0 and float(kegman.conf['Ki']) != -1:
     kegman.conf['Ki'] = "0"
@@ -250,11 +253,16 @@ while True:
   #if float(kegman.conf['Kf']) < 0.00001:
   kegman.conf['Kf'] = str("{:.5f}".format(float(kegman.conf['Kf'])))
 
-  if float(kegman.conf['slowOnCurves']) > 0.00001:
-    kegman.conf['slowOnCurves'] = "1"
+  #if float(kegman.conf['slowOnCurves']) > 0.00001:
+  #  kegman.conf['slowOnCurves'] = "1"
   
-  if float(kegman.conf['slowOnCurves']) <= 0.99999:
-    kegman.conf['slowOnCurves'] = "0"  
+  #if float(kegman.conf['slowOnCurves']) <= 0.99999:
+  #  kegman.conf['slowOnCurves'] = "0"  
+  if float(kegman.conf['slowOnCurves']) > 1:
+    kegman.conf['slowOnCurves'] = "1.0"
+
+  if float(kegman.conf['slowOnCurves']) < 0:
+    kegman.conf['slowOnCurves'] = "0.0"
     
 
   if write_json:

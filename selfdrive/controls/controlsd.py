@@ -25,6 +25,8 @@ from selfdrive.controls.lib.alertmanager import AlertManager
 from selfdrive.controls.lib.vehicle_model import VehicleModel
 from selfdrive.controls.lib.planner import LON_MPC_STEP
 from selfdrive.locationd.calibration_helpers import Calibration, Filter
+# CHO:03/26/2020 Added kegman_conf to read parameter
+from selfdrive.kegman_conf import kegman_conf
 
 LANE_DEPARTURE_THRESHOLD = 0.1
 
@@ -261,8 +263,10 @@ def state_control(frame, rcv_frame, plan, path_plan, CS, CP, state, events, v_cr
   # Gas/Brake PID loop
   actuators.gas, actuators.brake = LoC.update(active, CS.vEgo, CS.brakePressed, CS.standstill, CS.cruiseState.standstill,
                                               v_cruise_kph, v_acc_sol, plan.vTargetFuture, a_acc_sol, CP)
-  # Steering PID loop and lateral MPC
-  actuators.steer, actuators.steerAngle, lac_log = LaC.update(active, CS.vEgo, CS.steeringAngle, CS.steeringRate, CS.steeringTorqueEps, CS.steeringPressed, CS.steeringRateLimited, CP, path_plan)
+  # Steering PID loop and lateral MPC CHO:3/26/2020 try to increase steeringTorqueEps.
+  kegman = kegman_conf(CP)
+  actuators.steer, actuators.steerAngle, lac_log = LaC.update(active, CS.vEgo, CS.steeringAngle, CS.steeringRate, CS.steeringTorqueEps*float(kegman.config['steerTorqueMP']), CS.steeringPressed, CS.steeringRateLimited, CP, path_plan)
+  #actuators.steer, actuators.steerAngle, lac_log = LaC.update(active, CS.vEgo, CS.steeringAngle, CS.steeringRate, CS.steeringTorqueEps, CS.steeringPressed, CS.steeringRateLimited, CP, path_plan)
 
   # Send a "steering required alert" if saturation count has reached the limit
   if lac_log.saturated and not CS.steeringPressed:

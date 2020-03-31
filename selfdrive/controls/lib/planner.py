@@ -140,7 +140,10 @@ class Planner():
       
     self.mpc_frame += 1
     
-    if len(sm['model'].path.poly) and int(self.kegman.conf['slowOnCurves']):
+    # CHO: 03/30/2020 Allow to set slowOnCurve between 1.0 to 0.0. This allow slowOnCurve adjust how to the car should slow down.\
+    # 1.0 is max value and 0.0 is to disable the slowOnCurve
+    #if len(sm['model'].path.poly) and int(self.kegman.conf['slowOnCurves']):
+    if len(sm['model'].path.poly) and float(self.kegman.conf['slowOnCurves']) > 0.0:
       path = list(sm['model'].path.poly)
 
       # Curvature of polynomial https://en.wikipedia.org/wiki/Curvature#Curvature_of_the_graph_of_a_function
@@ -153,7 +156,8 @@ class Planner():
 
       a_y_max = 2.975 - v_ego * 0.0375  # ~1.85 @ 75mph, ~2.6 @ 25mph
       v_curvature = np.sqrt(a_y_max / np.clip(np.abs(curv), 1e-4, None))
-      model_speed = np.min(v_curvature)
+      #model_speed = np.min(v_curvature)
+      model_speed = np.min(v_curvature) / float(self.kegman.conf['slowOnCurves'])
       model_speed = max(20.0 * CV.MPH_TO_MS, model_speed) # Don't slow down below 20mph
     else:
       model_speed = MAX_SPEED

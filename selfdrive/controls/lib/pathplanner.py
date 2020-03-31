@@ -78,11 +78,12 @@ class PathPlanner():
     self.alc_nudge_less = bool(int(kegman.conf['ALCnudgeLess']))
     self.alc_min_speed = float(kegman.conf['ALCminSpeed'])
     self.alc_timer = float(kegman.conf['ALCtimer'])
-    #CHO: Added ALCdumpenfactor and prevent user enter factor at 0 (which will disable lane change)
-    if kegman.conf['ALCdumpenfactor'] == "-1" or kegman.conf['ALCdumpenfactor'] == "0": 
+    #CHO: Added ALCdumpenMP and prevent user enter factor at 0 (which will disable lane change)
+    #if kegman.conf['ALCdumpenMP'] == "-1" or kegman.conf['ALCdumpenMP'] == "0": 
+    if float(kegman.conf['ALCdumpenMP']) <=0.0: 
       self.alc_dumpener = 1.0
     else:
-      self.alc_dumpener = float(kegman.conf['ALCdumpenfactor'])
+      self.alc_dumpener = float(kegman.conf['ALCdumpenMP'])
 
     self.lane_change_state = LaneChangeState.off
     self.lane_change_timer = 0.0

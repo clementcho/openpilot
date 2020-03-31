@@ -94,8 +94,10 @@ class kegman_conf():
         self.config.update({"3barHwy":"0.1"})
         self.element_updated = True
 	
+      # CHO: 03/30/2020 Allow to set slowOnCurve between 1.0 to 0.0. This allow slowOnCurve adjust how to the car should slow down.
+      # 1.0 is max value and 0.0 is to disable the slowOnCurve
       if "slowOnCurves" not in self.config:
-        self.config.update({"slowOnCurves":"0"})
+        self.config.update({"slowOnCurves":"0.0"})
         self.element_updated = True
 	
       if "Kf" not in self.config:
@@ -118,11 +120,15 @@ class kegman_conf():
         self.config.update({"ALCtimer":"2.0"})
         self.element_updated = True
 
-      # CHO: add ALCDumpenfactor 
+      # CHO: add ALCDumpenMP steerTorqueMP
       # For adjust the speed of change lane 1 is netural f>1 to steepen the delta (harder-quicker lane change) f<1<0 to lessen (softer-slower lane change)
-      if "ALCdumpenfactor" not in self.config:
-        self.config.update({"ALCdumpenfactor":"1"})
+      if "ALCdumpenMP" not in self.config:
+        self.config.update({"ALCdumpenMP":"1.0"})
         self.element_updated = True
+
+      if "steerTorqueMP" not in self.config:
+      	self.confg.update({"steerTorqueMP":"1.0"})
+      	self.element_update = True
 
       if "CruiseDelta" not in self.config:
         self.config.update({"CruiseDelta":"8"})
@@ -137,7 +143,11 @@ class kegman_conf():
         self.write_config(self.config)
 
     else:
-      #CHO: Added ALCdumpenfactor
+      # When the kegman.conf file doesn't exist
+      # CHO 03/31/2020: Added ALCdumpenMP, steerTorqueMP
+      # "ALCdumpenMP_comment": "Multiplier to soften the Lane Change spd value cannot be 0.0 (default 1.0) 0.1 - 1.0",
+      # "slowOnCurves_comment": "1.0 - 0.0 values 1.0 is max 0.0 is disable slowdown (0.0 is default)",
+      # "steerTorqueMP_comment": "Multiper increase the torque power cannot be 0.0 (1.0 is default) 0.1 - x.0",
       self.config = {"cameraOffset":"0.06", "lastTrMode":"1", "battChargeMin":"60", "battChargeMax":"70", \
                      "wheelTouchSeconds":"180", "battPercOff":"25", "carVoltageMinEonShutdown":"11800", \
                      "brakeStoppingTarget":"0.25", "tuneGernby":"1", \
@@ -145,9 +155,9 @@ class kegman_conf():
 		     "1barBP0":"-0.1", "1barBP1":"2.25", "2barBP0":"-0.1", "2barBP1":"2.5", "3barBP0":"0.0", \
 		     "3barBP1":"3.0", "1barMax":"2.1", "2barMax":"2.1", "3barMax":"2.1", \
 		     "1barHwy":"0.4", "2barHwy":"0.3", "3barHwy":"0.1", \
-		     "steerRatio":"-1", "steerRateCost":"-1", "slowOnCurves":"0", "Kf":"-1", \
+		     "steerTorqueMP":"1.0", "steerRatio":"-1", "steerRateCost":"-1", "slowOnCurves":"0.0", "Kf":"-1", \
 		     "sR_boost":"0", "sR_BP0":"0", "sR_BP1":"0", "sR_time":"1", \
-                     "ALCnudgeLess":"0", "ALCminSpeed":"20.1168", "ALCtimer":"2.0", "ALCdumpenfactor":"1", "CruiseDelta":"8", "CruiseEnableMin":"40"}
+                     "ALCnudgeLess":"0", "ALCminSpeed":"20.1168", "ALCtimer":"2.0", "ALCdumpenMP":"1.0", "CruiseDelta":"8", "CruiseEnableMin":"40"}
 
 
       self.write_config(self.config)
