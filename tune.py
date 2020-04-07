@@ -41,6 +41,7 @@ button_delay = 0.2
 kegman = kegman_conf()
 kegman.conf['tuneGernby'] = "1"
 #kegman.write_config(kegman.conf)
+#CHO: added steerTorqueMP, ALCdumpenMP
 param = ["steerTorqueMP", "ALCdumpenMP", "Kp", "Ki", "Kf", "steerRatio", "sR_boost", "sR_BP0", \
          "sR_BP1", "sR_time", "steerRateCost", "deadzone", "slowOnCurves", \
          "1barBP0", "1barBP1", "1barMax", "2barBP0", "2barBP1", \
@@ -126,7 +127,7 @@ while True:
     process.kill()
     break
 
-  #Safety check prevent value go out of bound.
+  #CHO: Safety check prevent value go out of bound.
   if float(kegman.conf['ALCdumpenMP']) <=0.0:
     kegman.conf['ALCdumpenMP'] = "0.1"
 
@@ -258,6 +259,7 @@ while True:
   
   #if float(kegman.conf['slowOnCurves']) <= 0.99999:
   #  kegman.conf['slowOnCurves'] = "0"  
+  #CHO: allow slowOnCurves has adjustable slowdown
   if float(kegman.conf['slowOnCurves']) > 1.0:
     kegman.conf['slowOnCurves'] = "1.0"
 
