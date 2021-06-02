@@ -118,36 +118,42 @@ class kegman_conf():
         self.config.update({"ALCtimer":"2.0"})
         self.element_updated = True
 
-      # CHO: add ALCDumpenfactor 
-      # For adjust the speed of change lane 1 is netural f>1 to steepen the delta (harder-quicker lane change) f<1<0 to lessen (softer-slower lane change)
-      if "ALCdumpenfactor" not in self.config:
-        self.config.update({"ALCdumpenfactor":"1"})
-        self.element_updated = True
-
       if "CruiseDelta" not in self.config:
         self.config.update({"CruiseDelta":"8"})
         self.element_updated = True
 
       if "CruiseEnableMin" not in self.config:
         self.config.update({"CruiseEnableMin":"40"})
-        self.element_updated = True	
+        self.element_updated = True
 
+      if "epsModded" not in self.config:
+        self.config.update({"epsModded":"0"})
+        self.element_updated = True
+
+      if "accelerationMode" not in self.config:
+        self.config.update({"accelerationMode":"1"})
+        self.element_updated = True
+
+      if "AutoHold" not in self.config:
+        self.config.update({"AutoHold":"0"})
+        self.element_updated = True
+	
       if self.element_updated:
         print("updated")
         self.write_config(self.config)
 
     else:
-      #CHO: Added ALCdumpenfactor
       self.config = {"cameraOffset":"0.06", "lastTrMode":"1", "battChargeMin":"60", "battChargeMax":"70", \
-                     "wheelTouchSeconds":"180", "battPercOff":"25", "carVoltageMinEonShutdown":"11800", \
-                     "brakeStoppingTarget":"0.25", "tuneGernby":"1", \
+                     "wheelTouchSeconds":"180", "accelerationMode":"1","battPercOff":"25", "carVoltageMinEonShutdown":"11800", \
+                     "brakeStoppingTarget":"0.25", "tuneGernby":"1", "AutoHold":"0",\
                      "Kp":"-1", "Ki":"-1", "liveParams":"1", "leadDistance":"5", "deadzone":"0.0", \
-		     "1barBP0":"-0.1", "1barBP1":"2.25", "2barBP0":"-0.1", "2barBP1":"2.5", "3barBP0":"0.0", \
-		     "3barBP1":"3.0", "1barMax":"2.1", "2barMax":"2.1", "3barMax":"2.1", \
-		     "1barHwy":"0.4", "2barHwy":"0.3", "3barHwy":"0.1", \
-		     "steerRatio":"-1", "steerRateCost":"-1", "slowOnCurves":"0", "Kf":"-1", \
-		     "sR_boost":"0", "sR_BP0":"0", "sR_BP1":"0", "sR_time":"1", \
-                     "ALCnudgeLess":"0", "ALCminSpeed":"20.1168", "ALCtimer":"2.0", "ALCdumpenfactor":"1", "CruiseDelta":"8", "CruiseEnableMin":"40"}
+                     "1barBP0":"-0.1", "1barBP1":"2.25", "2barBP0":"-0.1", "2barBP1":"2.5", "3barBP0":"0.0", \
+                     "3barBP1":"3.0", "1barMax":"2.1", "2barMax":"2.1", "3barMax":"2.1", \
+                     "1barHwy":"0.4", "2barHwy":"0.3", "3barHwy":"0.1", \
+                     "steerRatio":"-1", "steerRateCost":"-1", "slowOnCurves":"0", "Kf":"-1", \
+                     "sR_boost":"0", "sR_BP0":"0", "sR_BP1":"0", "sR_time":"1", \
+                     "ALCnudgeLess":"0", "ALCminSpeed":"20.1168", "ALCtimer":"2.0", "CruiseDelta":"8", \
+                     "CruiseEnableMin":"40", "epsModded": "0"}
 
 
       self.write_config(self.config)
